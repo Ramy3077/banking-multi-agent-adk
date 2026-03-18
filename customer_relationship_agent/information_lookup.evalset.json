@@ -1,0 +1,77 @@
+{
+  "eval_set_id": "information_lookup",
+  "name": "information_lookup",
+  "eval_cases": [
+    {
+      "eval_id": "casede38a0",
+      "conversation": [
+        {
+          "invocation_id": "e-1ec1cac4-91ec-4197-b8fe-82e6832513e2",
+          "user_content": {
+            "parts": [
+              {
+                "text": "Give me the customer name and phone number for the email address ceri_jonas@example.org\n"
+              }
+            ],
+            "role": "user"
+          },
+          "final_response": {
+            "parts": [
+              {
+                "text": "The customer's name is Ceri Jonas and their phone number is 01234 567 890.",
+                "thought_signature": "CrsCAY89a1-aSjudl-Frs4htD19YCseCXb3lcoHgCOARihCnqC7TQSX_ojJ1iPj1EXPGe94O-fXOhmYNSxN0FxOgblohJv6UibGCOxkmcY4K0rzN07elo-Ch4LTe9HB5EupUqUQ3YeUXkQ5x7TSHbRP0TiUoZLnqIT2DRlyacpkcGN5EPrSiy_vd2GN7x9KBmb83DfixKF2JXTXCIMK9bPDTx7vm7rz6-HFXq7VNVf_CE2cFsqj9WF0Z4tneo6DKP9XHGacyR6pdSkH-tmxY4nChxlslIp9gBoq0pTDbZvq7n-jgPaIRkrr2_ZjNw_VzNkICtUCVW0crX3VVw0SmKSaQ7hELDIU1-gl790AnZ6Upbui4hpkYBEabM4Xql2oSbPRgm2bDipkeyk_10hnCiEfEPy0tv11qhUK-IEP4"
+              }
+            ],
+            "role": "model"
+          },
+          "intermediate_data": {
+            "invocation_events": [
+              {
+                "author": "root_agent",
+                "content": {
+                  "parts": [
+                    {
+                      "function_call": {
+                        "id": "adk-d16d4ebd-d8d6-4960-b90b-b9ec51e943b6",
+                        "args": {
+                          "request": "customer name and phone number for the email address ceri_jonas@example.org"
+                        },
+                        "name": "bq_agent"
+                      },
+                      "thought_signature": "CvAEAY89a1-A08vhZOQL1lHHeLncfQ0YbYd09jR8dGFlGIe7Nxe8z8JwhyGqnjzLVkT-eIJWE4D3UcFtoiIwkQMJIvS1k9jaBk1cfVnmo37w9bLHRDkAidf9CrhHjOvJgvpoCwDJyENioVUoK7DC0SqWNlSInIToBKx1UJ30Nx5jWDL_JtgnOYcjOmQzsg8F7v_nWG3Hj5wMqWIrgWga2F8N3ZRfFlw4w_QLaPISVr3uxjLHbRtVOOGHGdJ7iTkXrYLKu9_Nj3XwvuMOZeBdzolqY3kQx01c_BlWmfWW91G1ly9JFW0tM5pk4_VQme2YDySL62t7hszyDvaYXdmx-Qjr-XYs_vgyKXx7nWOJO2LTbhHWFnMClNjyetOXTGT90_Ck7ctAhJbP2FvFXLb42xhuLDj6BgnbKhrNMMoQZyXrDnCO7LFrO0p12WU1WiCgZVQYlL9MzN4CrEiFBAXqpaFmyeBw8dI2DQC0iljpHkJBVnt9fqrwxawiLVtJRo4GQQop7WuylByL5N93D-_czXoFkoD2XMm1yVAIZvYklfLLfwhatPelHgNjuy_hhRdiNsKg_uuwCjxKWSgz4Y7hLoCsoj7dqUQALAEGRnUDyCZSI9j56seQgjh-2fvIxPq74CFJXZE3FuqoXFVA1qduwsx5eotqLM_28xWinkooGk6kIC-hsPssy9t1t9Q5WVQVXOINew9DbSbYSpdLLejZxj_XvJzrCrVDDfexcdnyJBqUf-uW8wU6vglbK81qAc8GzoatGIdQ0St9ateiO5IG3aBJWweKG4zIbsWoYUXfrb_61EMfoWbVm7PtXsoBBIwyCfjm"
+                    }
+                  ],
+                  "role": "model"
+                }
+              },
+              {
+                "author": "root_agent",
+                "content": {
+                  "parts": [
+                    {
+                      "function_response": {
+                        "id": "adk-d16d4ebd-d8d6-4960-b90b-b9ec51e943b6",
+                        "name": "bq_agent",
+                        "response": {
+                          "result": "The customer's name is Ceri Jonas and their phone number is 01234 567 890."
+                        }
+                      }
+                    }
+                  ],
+                  "role": "user"
+                }
+              }
+            ]
+          },
+          "creation_timestamp": 1773849422.7964518
+        }
+      ],
+      "session_input": {
+        "app_name": "customer_relationship_agent",
+        "user_id": "user"
+      },
+      "creation_timestamp": 1773849454.003148
+    }
+  ],
+  "creation_timestamp": 1773849091.72376
+}
