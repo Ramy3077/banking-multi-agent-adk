@@ -2,7 +2,7 @@ import os
 from pathlib import Path
 from google.adk.agents.llm_agent import Agent
 from google.adk.tools.agent_tool import AgentTool
-from google.adk.tools.mcp_tool import McpTool, StreamableHTTPConnectionParams
+from google.adk.tools.mcp_tool import McpToolset, StreamableHTTPConnectionParams
 from ..tools import bigquery_agent
 
 # Read the system prompt from the PROMPT.md file
@@ -12,12 +12,12 @@ with open(prompt_file, "r") as f:
 
 # Configure the Maps MCP tool
 maps_tool_params = StreamableHTTPConnectionParams(
-    host="mapstools.googleapis.com",
+    url="https://mapstools.googleapis.com/mcp",
     headers={"X-Goog-Api-Key": os.environ.get("GOOGLE_MAPS_API_KEY", "")}
 )
-maps_mcp_tool = McpTool(
+maps_mcp_tool = McpToolset(
     connection_params=maps_tool_params,
-    filter_tool_names=["search_places"]
+    tool_filter=["search_places"],
 )
 
 navigator_agent = Agent(
