@@ -9,3 +9,6 @@ wheels/
 # Virtual environments
 .venv
 customer_relationship_agent/.env
+
+# ADK local runtime state — session history, not source
+.adk/
