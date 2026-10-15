@@ -1,11 +1,13 @@
 import os
 import uuid
 from datetime import date
+
 import google.cloud.bigquery as bigquery
 
 # Configure BQ connectivity from environment variables
-GOOGLE_CLOUD_PROJECT_ID = os.environ.get("GOOGLE_CLOUD_PROJECT", "birmiu-agent-one26bir-3066")
+GOOGLE_CLOUD_PROJECT_ID = os.environ.get("GOOGLE_CLOUD_PROJECT")
 BQ_DATASET = os.environ.get("BQ_DATASET_NAME", "cymbal_bank")
+BQ_CUSTOMER_TABLE = os.environ.get("BQ_CUSTOMER_TABLE", "customers")
 BQ_COMPLAINTS_TABLE = os.environ.get("BQ_COMPLAINTS_TABLE", "complaints")
 
 
@@ -85,6 +87,7 @@ def update_complaint(complaint_id: str, status: str = None, resolution_notes: st
 
     try:
         query_job = client.query(query, job_config=job_config)
+        query_job.result()  # wait for the DML job; the row count is only set once it is done
         if query_job.num_dml_affected_rows == 0:
             return f"Error: Complaint ID {complaint_id} not found. No update performed."
         return f"Success: Complaint {complaint_id} updated."

@@ -1,13 +1,16 @@
 from pathlib import Path
+
 from google.adk.agents.llm_agent import Agent
+
 # Import the AgentTool helper
 from google.adk.tools.agent_tool import AgentTool
-# Import your customer record tool
-from .tools import bigquery_agent, update_customer_phone_by_name, find_customer_by_name
+
 # Import complaints agent
 from .complaints_agent.complaints import complaints_agent
 from .navigator_agent.navigator import navigator_agent
 
+# Import your customer record tool
+from .tools import bigquery_agent, find_customer_by_name, update_customer_phone_by_name
 
 # Read the system prompt from the PROMPT.md file
 prompt_file = Path(__file__).parent / "PROMPT.md"

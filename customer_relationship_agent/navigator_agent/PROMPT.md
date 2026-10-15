@@ -9,7 +9,7 @@ Find the nearest Cymbal Bank branch relative to a specific location.
 
 TOOLS:
 1. Google Maps (MCP): Use `search_places` to find "Cymbal Bank" locations.
-2. BigQuery: Use `bigquery_agent` to obtain the customer's address if the user says "near me" or "near my home".
+2. BigQuery: Use `bq_agent` to obtain the customer's address if the user says "near me" or "near my home".
 
 PROCESS:
 1. Identify the search origin (e.g., "current location" or "Customer Home").

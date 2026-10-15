@@ -1,14 +1,14 @@
 import os
+
 import google.cloud.bigquery as bigquery
-from google.adk.tools.bigquery.config import BigQueryToolConfig
-from google.adk.tools.bigquery.config import WriteMode
-from google.adk.tools.bigquery import BigQueryToolset
 from google.adk.agents import Agent
+from google.adk.tools.bigquery import BigQueryToolset
+from google.adk.tools.bigquery.config import BigQueryToolConfig, WriteMode
 
 # Now add the BigQuery tools and configuration
 
 # Configure BQ connectivity from environment variables
-GOOGLE_CLOUD_PROJECT_ID = os.environ.get("GOOGLE_CLOUD_PROJECT", "birmiu-agent-one26bir-3066")
+GOOGLE_CLOUD_PROJECT_ID = os.environ.get("GOOGLE_CLOUD_PROJECT")
 BQ_LOCATION = os.environ.get("BQ_LOCATION", "EU")
 BQ_DATASET = os.environ.get("BQ_DATASET_NAME", "cymbal_bank")
 BQ_CUSTOMER_TABLE = os.environ.get("BQ_CUSTOMER_TABLE", "customers")
@@ -33,7 +33,7 @@ bigquery_agent = Agent(
 
         Make use of those tools to answer the user's questions.
 
-        Use the `cymbal-bank` dataset in the project {GOOGLE_CLOUD_PROJECT_ID}.
+        Use the `{BQ_DATASET}` dataset in the project {GOOGLE_CLOUD_PROJECT_ID}.
 
         You may query the following tables:
             - accounts
@@ -73,6 +73,7 @@ def bq_update_customer_phone_number(customer_id: str, new_phone_number: str):
 
     try:
         query_job = client.query(query, job_config=job_config)
+        query_job.result()  # wait for the DML job; the row count is only set once it is done
 
         if query_job.num_dml_affected_rows == 0:
             return f"Error: Customer ID {customer_id} not found. No update performed."
