@@ -12,3 +12,6 @@ customer_relationship_agent/.env
 
 # ADK local runtime state — session history, not source
 .adk/
+
+# Demo SQLite database (recreated from customer_relationship_agent/demo_backend/seed.sql)
+.demo/

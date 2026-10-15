@@ -5,6 +5,8 @@ from google.adk.agents import Agent
 from google.adk.tools.bigquery import BigQueryToolset
 from google.adk.tools.bigquery.config import BigQueryToolConfig, WriteMode
 
+from .backend import MODEL
+
 # Now add the BigQuery tools and configuration
 
 # Configure BQ connectivity from environment variables
@@ -23,7 +25,7 @@ bigquery_toolset = BigQueryToolset(bigquery_tool_config=tool_config)
 # Agent Definition
 # The BigQuery tool can only be called as an agent. Use the following to do so.
 bigquery_agent = Agent(
-    model="gemini-2.5-flash",
+    model=MODEL,
     name="bq_agent",
     description=(
         "A read-only agent to answer questions about customer records, accounts, and transactions"
