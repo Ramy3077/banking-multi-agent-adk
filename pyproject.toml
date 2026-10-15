@@ -13,7 +13,9 @@ dependencies = [
 
 [tool.uv]
 # starlette <1.x carries several advisories; google-adk 1.x does not require the old line.
-override-dependencies = ["starlette>=1.3.1", "cryptography>=50.0.0"]
+# google-cloud-aiplatform[evaluation] (via google-adk[eval]) caps litellm below 1.86 on Python < 3.14, which keeps a
+# litellm advisory open (patched in 1.88.6). The eval path used here does not depend on the older line.
+override-dependencies = ["starlette>=1.3.1", "cryptography>=50.0.0", "litellm>=1.88.6"]
 
 [dependency-groups]
 dev = ["pytest>=8", "ruff>=0.6"]
