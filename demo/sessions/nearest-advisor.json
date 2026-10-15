@@ -1,0 +1,246 @@
+{
+  "id": "nearest-advisor",
+  "title": "Find the nearest advisor",
+  "summary": "Handoff to navigator_agent, which looks up the customer's address and searches for nearby Pop-Up Advisors.",
+  "model": "gemini-3-flash-preview",
+  "backend": "sqlite (fictional demo data)",
+  "recorded_at": "2026-10-15T11:06:32+00:00",
+  "events": [
+    {
+      "turn": 1,
+      "t_ms": 3,
+      "author": "user",
+      "parts": [
+        {
+          "type": "text",
+          "text": "I'm Priya Testwell. Where is the nearest Cymbal Bank advisor to my home?"
+        }
+      ]
+    },
+    {
+      "turn": 1,
+      "t_ms": 1193,
+      "author": "root_agent",
+      "invocation_id": "e-1f67620c-9026-4f60-b2b3-7d16c4c9ed92",
+      "parts": [
+        {
+          "type": "function_call",
+          "id": "call_360831",
+          "name": "bq_agent",
+          "args": {
+            "request": "What is the home address for customer Priya Testwell?"
+          }
+        }
+      ]
+    },
+    {
+      "turn": 1,
+      "t_ms": 2279,
+      "author": "bq_agent",
+      "invocation_id": "e-bd2f450b-699e-4aac-8a11-b3c394897e57",
+      "parts": [
+        {
+          "type": "function_call",
+          "id": "call_532952",
+          "name": "get_table_info",
+          "args": {
+            "table_id": "customers"
+          }
+        }
+      ]
+    },
+    {
+      "turn": 1,
+      "t_ms": 2281,
+      "author": "bq_agent",
+      "invocation_id": "e-bd2f450b-699e-4aac-8a11-b3c394897e57",
+      "parts": [
+        {
+          "type": "function_response",
+          "id": "call_532952",
+          "name": "get_table_info",
+          "response": {
+            "status": "SUCCESS",
+            "table": "customers",
+            "columns": [
+              {
+                "name": "customer_id",
+                "type": "TEXT"
+              },
+              {
+                "name": "name",
+                "type": "TEXT"
+              },
+              {
+                "name": "email",
+                "type": "TEXT"
+              },
+              {
+                "name": "phone",
+                "type": "TEXT"
+              },
+              {
+                "name": "address",
+                "type": "TEXT"
+              },
+              {
+                "name": "date_joined",
+                "type": "TEXT"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "turn": 1,
+      "t_ms": 3154,
+      "author": "bq_agent",
+      "invocation_id": "e-bd2f450b-699e-4aac-8a11-b3c394897e57",
+      "parts": [
+        {
+          "type": "function_call",
+          "id": "call_392854",
+          "name": "execute_sql",
+          "args": {
+            "query": "SELECT address FROM customers WHERE name = 'Priya Testwell'"
+          }
+        }
+      ]
+    },
+    {
+      "turn": 1,
+      "t_ms": 3154,
+      "author": "bq_agent",
+      "invocation_id": "e-bd2f450b-699e-4aac-8a11-b3c394897e57",
+      "parts": [
+        {
+          "type": "function_response",
+          "id": "call_392854",
+          "name": "execute_sql",
+          "response": {
+            "status": "SUCCESS",
+            "rows": [
+              {
+                "address": "7 Fixture Close, Testbury, TB1 7DD"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "turn": 1,
+      "t_ms": 4162,
+      "author": "bq_agent",
+      "invocation_id": "e-bd2f450b-699e-4aac-8a11-b3c394897e57",
+      "parts": [
+        {
+          "type": "text",
+          "text": "The home address for Priya Testwell is 7 Fixture Close, Testbury, TB1 7DD."
+        }
+      ]
+    },
+    {
+      "turn": 1,
+      "t_ms": 4163,
+      "author": "root_agent",
+      "invocation_id": "e-1f67620c-9026-4f60-b2b3-7d16c4c9ed92",
+      "parts": [
+        {
+          "type": "function_response",
+          "id": "call_360831",
+          "name": "bq_agent",
+          "response": {
+            "result": "The home address for Priya Testwell is 7 Fixture Close, Testbury, TB1 7DD."
+          }
+        }
+      ]
+    },
+    {
+      "turn": 1,
+      "t_ms": 5030,
+      "author": "root_agent",
+      "invocation_id": "e-1f67620c-9026-4f60-b2b3-7d16c4c9ed92",
+      "parts": [
+        {
+          "type": "function_call",
+          "id": "call_580183",
+          "name": "transfer_to_agent",
+          "args": {
+            "agent_name": "navigator_agent"
+          }
+        }
+      ]
+    },
+    {
+      "turn": 1,
+      "t_ms": 5030,
+      "author": "root_agent",
+      "invocation_id": "e-1f67620c-9026-4f60-b2b3-7d16c4c9ed92",
+      "parts": [
+        {
+          "type": "function_response",
+          "id": "call_580183",
+          "name": "transfer_to_agent",
+          "response": {
+            "result": null
+          }
+        }
+      ],
+      "transfer_to_agent": "navigator_agent"
+    },
+    {
+      "turn": 1,
+      "t_ms": 6376,
+      "author": "navigator_agent",
+      "invocation_id": "e-1f67620c-9026-4f60-b2b3-7d16c4c9ed92",
+      "parts": [
+        {
+          "type": "function_call",
+          "id": "call_595924",
+          "name": "search_places",
+          "args": {
+            "text_query": "Starbucks near 7 Fixture Close, Testbury, TB1 7DD"
+          }
+        }
+      ]
+    },
+    {
+      "turn": 1,
+      "t_ms": 6377,
+      "author": "navigator_agent",
+      "invocation_id": "e-1f67620c-9026-4f60-b2b3-7d16c4c9ed92",
+      "parts": [
+        {
+          "type": "function_response",
+          "id": "call_595924",
+          "name": "search_places",
+          "response": {
+            "places": [
+              {
+                "name": "Pop-Up Advisor at Bean There Coffee, Testbury High Street",
+                "address": "102 High Street, Testbury, TB1 1EF",
+                "town": "Testbury",
+                "opening_hours": "Tue-Sat 10:00-18:00"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "turn": 1,
+      "t_ms": 8299,
+      "author": "navigator_agent",
+      "invocation_id": "e-1f67620c-9026-4f60-b2b3-7d16c4c9ed92",
+      "parts": [
+        {
+          "type": "text",
+          "text": "Your nearest Cymbal Advisor is located at Pop-Up Advisor at Bean There Coffee, Testbury High Street, 102 High Street, Testbury, TB1 1EF."
+        }
+      ]
+    }
+  ],
+  "database_after": []
+}

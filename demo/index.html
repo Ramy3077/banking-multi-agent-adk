@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Banking Agent Replays</title>
+  <meta name="description" content="Recorded runs of a Google ADK multi-agent banking assistant against a fictional SQLite dataset. Replays, not live.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.2/marked.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.1.6/purify.min.js"></script>
+</head>
+<body>
+  <header class="top">
+    <div class="wrap">
+      <p class="eyebrow">Google ADK · multi-agent · session replay</p>
+      <h1>Cymbal Bank customer agent</h1>
+      <p class="notice" id="notice">Recorded runs of the real agent against a fictional SQLite dataset. Replays, not live.</p>
+      <p class="links">
+        <a href="https://github.com/Ramy3077/banking-multi-agent-adk">Source on GitHub</a>
+        <span aria-hidden="true">·</span>
+        <a href="#about">How these were recorded</a>
+      </p>
+    </div>
+  </header>
+
+  <main class="wrap layout">
+    <nav class="scenarios" aria-label="Scenarios">
+      <h2 class="label">Scenarios</h2>
+      <ol id="scenario-list"></ol>
+    </nav>
+
+    <section class="stage" aria-live="polite">
+      <div class="stage-head">
+        <div>
+          <h2 id="scenario-title">Loading…</h2>
+          <p id="scenario-summary" class="muted"></p>
+          <p id="scenario-meta" class="meta mono"></p>
+        </div>
+        <div class="controls">
+          <button type="button" id="prev" aria-label="Previous step">Back</button>
+          <button type="button" id="next" class="primary" aria-label="Next step">Next step</button>
+          <button type="button" id="all">Show all</button>
+        </div>
+      </div>
+      <p class="progress muted" id="progress"></p>
+
+      <div class="lanes" aria-hidden="true">
+        <span class="lane-head" data-lane="root_agent">root_agent</span>
+        <span class="lane-head" data-lane="complaints_handler">complaints_handler</span>
+        <span class="lane-head" data-lane="navigator_agent">navigator_agent</span>
+        <span class="lane-head" data-lane="bq_agent">bq_agent</span>
+      </div>
+
+      <ol class="timeline" id="timeline"></ol>
+      <section class="after" id="after" hidden>
+        <h3>Database after the run</h3>
+        <div id="after-body"></div>
+      </section>
+    </section>
+  </main>
+
+  <footer class="wrap about" id="about">
+    <h2>How these were recorded</h2>
+    <p>Each scenario was run through ADK's <code>InMemoryRunner</code> with the repo's real agents and prompts,
+      using <code>BANK_BACKEND=sqlite</code>. A runner plugin saved every event, including those from
+      <code>bq_agent</code>, which runs inside an <code>AgentTool</code>. Each scenario started from a fresh copy of
+      the seed database. Nothing on this page calls a model.</p>
+    <p>In the demo backend, <code>bq_agent</code> answers with three read-only SQL tools over SQLite instead of
+      ADK's BigQuery toolset, and <code>search_places</code> is a local stand-in for the Google Maps tool that only
+      knows fictional locations. Every customer, merchant and address is made up. Timings are wall-clock from the
+      recording, so they include model latency.</p>
+    <p id="model-note"></p>
+    <p>Script: <code>scripts/record_sessions.py</code>. Raw traces: <a href="sessions/index.json">sessions/</a>.</p>
+    <p>ADK evalset (<code>information_lookup</code>) on the SQLite backend with gemini-3.8-flash, 15 October 2026: failed. Tool trajectory 0.0 against a threshold of 1.0 (it called <code>bq_agent</code> as expected, but the request text differed from the recorded one and the default metric needs an exact match), response match 0.36 against 0.8 (correct name and phone number, worded differently). <a href="eval/information_lookup.evalset_result.json">Raw result</a>.</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

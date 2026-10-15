@@ -1,0 +1,79 @@
+{
+  "id": "update-phone",
+  "title": "Update a phone number",
+  "summary": "A write through the root agent's update_customer_phone_by_name tool.",
+  "model": "gemini-3.8-flash",
+  "backend": "sqlite (fictional demo data)",
+  "recorded_at": "2026-10-15T06:49:42+00:00",
+  "events": [
+    {
+      "turn": 1,
+      "t_ms": 0,
+      "author": "user",
+      "parts": [
+        {
+          "type": "text",
+          "text": "Sam Sample has a new phone number: 01632 960 999. Please update it."
+        }
+      ]
+    },
+    {
+      "turn": 1,
+      "t_ms": 54681,
+      "author": "root_agent",
+      "invocation_id": "e-0042bcef-9cf3-4089-b823-25d796a3a1c8",
+      "parts": [
+        {
+          "type": "function_call",
+          "id": "call_227616",
+          "name": "update_customer_phone_by_name",
+          "args": {
+            "new_phone_number": "01632 960 999",
+            "customer_name": "Sam Sample"
+          }
+        }
+      ]
+    },
+    {
+      "turn": 1,
+      "t_ms": 54682,
+      "author": "root_agent",
+      "invocation_id": "e-0042bcef-9cf3-4089-b823-25d796a3a1c8",
+      "parts": [
+        {
+          "type": "function_response",
+          "id": "call_227616",
+          "name": "update_customer_phone_by_name",
+          "response": {
+            "result": "Success: Phone number for Customer CUST-1002 updated to 01632 960 999."
+          }
+        }
+      ]
+    },
+    {
+      "turn": 1,
+      "t_ms": 58670,
+      "author": "root_agent",
+      "invocation_id": "e-0042bcef-9cf3-4089-b823-25d796a3a1c8",
+      "parts": [
+        {
+          "type": "text",
+          "text": "The phone number for **Sam Sample** has been successfully updated to **01632 960 999** (Customer ID: CUST-1002). \n\nPlease let me know if there is anything else I can assist you with today!"
+        }
+      ]
+    }
+  ],
+  "database_after": [
+    {
+      "label": "Sam Sample's phone number after the run",
+      "sql": "SELECT customer_id, name, phone FROM customers WHERE name = 'Sam Sample'",
+      "rows": [
+        {
+          "customer_id": "CUST-1002",
+          "name": "Sam Sample",
+          "phone": "01632 960 999"
+        }
+      ]
+    }
+  ]
+}

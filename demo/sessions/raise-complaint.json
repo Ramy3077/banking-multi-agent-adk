@@ -1,0 +1,923 @@
+{
+  "id": "raise-complaint",
+  "title": "Raise a complaint",
+  "summary": "Handoff to complaints_handler, which checks for open complaints, finds the transaction and asks before writing.",
+  "model": "gemini-3.1-flash-lite",
+  "backend": "sqlite (fictional demo data)",
+  "recorded_at": "2026-10-15T11:15:35+00:00",
+  "events": [
+    {
+      "turn": 1,
+      "t_ms": 0,
+      "author": "user",
+      "parts": [
+        {
+          "type": "text",
+          "text": "I'm Alex Example. I was charged twice at Gadget Barn on 3 October, 89.99 each time. I want to raise a complaint."
+        }
+      ]
+    },
+    {
+      "turn": 1,
+      "t_ms": 1127,
+      "author": "root_agent",
+      "invocation_id": "e-99a95f94-96be-4ab4-9dc3-f16dda4f5051",
+      "parts": [
+        {
+          "type": "function_call",
+          "id": "call_371877",
+          "name": "transfer_to_agent",
+          "args": {
+            "agent_name": "complaints_handler"
+          }
+        }
+      ]
+    },
+    {
+      "turn": 1,
+      "t_ms": 1127,
+      "author": "root_agent",
+      "invocation_id": "e-99a95f94-96be-4ab4-9dc3-f16dda4f5051",
+      "parts": [
+        {
+          "type": "function_response",
+          "id": "call_371877",
+          "name": "transfer_to_agent",
+          "response": {
+            "result": null
+          }
+        }
+      ],
+      "transfer_to_agent": "complaints_handler"
+    },
+    {
+      "turn": 1,
+      "t_ms": 2017,
+      "author": "complaints_handler",
+      "invocation_id": "e-99a95f94-96be-4ab4-9dc3-f16dda4f5051",
+      "parts": [
+        {
+          "type": "function_call",
+          "id": "call_411434",
+          "name": "find_customer_by_name",
+          "args": {
+            "customer_name": "Alex Example"
+          }
+        }
+      ]
+    },
+    {
+      "turn": 1,
+      "t_ms": 2018,
+      "author": "complaints_handler",
+      "invocation_id": "e-99a95f94-96be-4ab4-9dc3-f16dda4f5051",
+      "parts": [
+        {
+          "type": "function_response",
+          "id": "call_411434",
+          "name": "find_customer_by_name",
+          "response": {
+            "result": "CUST-1001"
+          }
+        }
+      ]
+    },
+    {
+      "turn": 1,
+      "t_ms": 6247,
+      "author": "complaints_handler",
+      "invocation_id": "e-99a95f94-96be-4ab4-9dc3-f16dda4f5051",
+      "parts": [
+        {
+          "type": "function_call",
+          "id": "call_339339",
+          "name": "bq_agent",
+          "args": {
+            "request": "Find open complaints for customer CUST-1001"
+          }
+        }
+      ]
+    },
+    {
+      "turn": 1,
+      "t_ms": 7127,
+      "author": "bq_agent",
+      "invocation_id": "e-82145409-e242-453c-bea4-e6f76ee51a91",
+      "parts": [
+        {
+          "type": "function_call",
+          "id": "call_525354",
+          "name": "list_table_ids",
+          "args": {}
+        }
+      ]
+    },
+    {
+      "turn": 1,
+      "t_ms": 7127,
+      "author": "bq_agent",
+      "invocation_id": "e-82145409-e242-453c-bea4-e6f76ee51a91",
+      "parts": [
+        {
+          "type": "function_response",
+          "id": "call_525354",
+          "name": "list_table_ids",
+          "response": {
+            "status": "SUCCESS",
+            "tables": [
+              "accounts",
+              "advisor_locations",
+              "complaints",
+              "customers",
+              "transactions"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "turn": 1,
+      "t_ms": 9485,
+      "author": "bq_agent",
+      "invocation_id": "e-82145409-e242-453c-bea4-e6f76ee51a91",
+      "parts": [
+        {
+          "type": "function_call",
+          "id": "call_501503",
+          "name": "get_table_info",
+          "args": {
+            "table_id": "complaints"
+          }
+        }
+      ]
+    },
+    {
+      "turn": 1,
+      "t_ms": 9486,
+      "author": "bq_agent",
+      "invocation_id": "e-82145409-e242-453c-bea4-e6f76ee51a91",
+      "parts": [
+        {
+          "type": "function_response",
+          "id": "call_501503",
+          "name": "get_table_info",
+          "response": {
+            "status": "SUCCESS",
+            "table": "complaints",
+            "columns": [
+              {
+                "name": "complaint_id",
+                "type": "TEXT"
+              },
+              {
+                "name": "customer_id",
+                "type": "TEXT"
+              },
+              {
+                "name": "transaction_id",
+                "type": "TEXT"
+              },
+              {
+                "name": "complaint_date",
+                "type": "TEXT"
+              },
+              {
+                "name": "category",
+                "type": "TEXT"
+              },
+              {
+                "name": "description",
+                "type": "TEXT"
+              },
+              {
+                "name": "status",
+                "type": "TEXT"
+              },
+              {
+                "name": "resolution_notes",
+                "type": "TEXT"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "turn": 1,
+      "t_ms": 10785,
+      "author": "bq_agent",
+      "invocation_id": "e-82145409-e242-453c-bea4-e6f76ee51a91",
+      "parts": [
+        {
+          "type": "function_call",
+          "id": "call_544831",
+          "name": "execute_sql",
+          "args": {
+            "query": "SELECT * FROM complaints WHERE customer_id = 'CUST-1001' AND status != 'Resolved' AND status != 'Closed'"
+          }
+        }
+      ]
+    },
+    {
+      "turn": 1,
+      "t_ms": 10786,
+      "author": "bq_agent",
+      "invocation_id": "e-82145409-e242-453c-bea4-e6f76ee51a91",
+      "parts": [
+        {
+          "type": "function_response",
+          "id": "call_544831",
+          "name": "execute_sql",
+          "response": {
+            "status": "SUCCESS",
+            "rows": []
+          }
+        }
+      ]
+    },
+    {
+      "turn": 1,
+      "t_ms": 14645,
+      "author": "bq_agent",
+      "invocation_id": "e-82145409-e242-453c-bea4-e6f76ee51a91",
+      "parts": [
+        {
+          "type": "function_call",
+          "id": "call_369973",
+          "name": "execute_sql",
+          "args": {
+            "query": "SELECT DISTINCT status FROM complaints"
+          }
+        }
+      ]
+    },
+    {
+      "turn": 1,
+      "t_ms": 14646,
+      "author": "bq_agent",
+      "invocation_id": "e-82145409-e242-453c-bea4-e6f76ee51a91",
+      "parts": [
+        {
+          "type": "function_response",
+          "id": "call_369973",
+          "name": "execute_sql",
+          "response": {
+            "status": "SUCCESS",
+            "rows": [
+              {
+                "status": "Open"
+              },
+              {
+                "status": "Resolved"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "turn": 1,
+      "t_ms": 15991,
+      "author": "bq_agent",
+      "invocation_id": "e-82145409-e242-453c-bea4-e6f76ee51a91",
+      "parts": [
+        {
+          "type": "function_call",
+          "id": "call_363378",
+          "name": "execute_sql",
+          "args": {
+            "query": "SELECT * FROM complaints WHERE customer_id = 'CUST-1001' AND status = 'Open'"
+          }
+        }
+      ]
+    },
+    {
+      "turn": 1,
+      "t_ms": 15992,
+      "author": "bq_agent",
+      "invocation_id": "e-82145409-e242-453c-bea4-e6f76ee51a91",
+      "parts": [
+        {
+          "type": "function_response",
+          "id": "call_363378",
+          "name": "execute_sql",
+          "response": {
+            "status": "SUCCESS",
+            "rows": []
+          }
+        }
+      ]
+    },
+    {
+      "turn": 1,
+      "t_ms": 17162,
+      "author": "bq_agent",
+      "invocation_id": "e-82145409-e242-453c-bea4-e6f76ee51a91",
+      "parts": [
+        {
+          "type": "function_call",
+          "id": "call_396226",
+          "name": "execute_sql",
+          "args": {
+            "query": "SELECT * FROM complaints WHERE customer_id = 'CUST-1001'"
+          }
+        }
+      ]
+    },
+    {
+      "turn": 1,
+      "t_ms": 17162,
+      "author": "bq_agent",
+      "invocation_id": "e-82145409-e242-453c-bea4-e6f76ee51a91",
+      "parts": [
+        {
+          "type": "function_response",
+          "id": "call_396226",
+          "name": "execute_sql",
+          "response": {
+            "status": "SUCCESS",
+            "rows": []
+          }
+        }
+      ]
+    },
+    {
+      "turn": 1,
+      "t_ms": 19463,
+      "author": "bq_agent",
+      "invocation_id": "e-82145409-e242-453c-bea4-e6f76ee51a91",
+      "parts": [
+        {
+          "type": "text",
+          "text": "No open complaints were found for customer CUST-1001. In fact, there are no complaints recorded in the system for this customer."
+        }
+      ]
+    },
+    {
+      "turn": 1,
+      "t_ms": 19464,
+      "author": "complaints_handler",
+      "invocation_id": "e-99a95f94-96be-4ab4-9dc3-f16dda4f5051",
+      "parts": [
+        {
+          "type": "function_response",
+          "id": "call_339339",
+          "name": "bq_agent",
+          "response": {
+            "result": "No open complaints were found for customer CUST-1001. In fact, there are no complaints recorded in the system for this customer."
+          }
+        }
+      ]
+    },
+    {
+      "turn": 1,
+      "t_ms": 22274,
+      "author": "complaints_handler",
+      "invocation_id": "e-99a95f94-96be-4ab4-9dc3-f16dda4f5051",
+      "parts": [
+        {
+          "type": "function_call",
+          "id": "call_484508",
+          "name": "bq_agent",
+          "args": {
+            "request": "Find transactions for customer CUST-1001 with merchant 'Gadget Barn' on 2023-10-03 for 89.99"
+          }
+        }
+      ]
+    },
+    {
+      "turn": 1,
+      "t_ms": 23759,
+      "author": "bq_agent",
+      "invocation_id": "e-d670a950-cb7a-4c19-a07d-366b81bcd5f4",
+      "parts": [
+        {
+          "type": "function_call",
+          "id": "call_580940",
+          "name": "list_table_ids",
+          "args": {}
+        }
+      ]
+    },
+    {
+      "turn": 1,
+      "t_ms": 23759,
+      "author": "bq_agent",
+      "invocation_id": "e-d670a950-cb7a-4c19-a07d-366b81bcd5f4",
+      "parts": [
+        {
+          "type": "function_response",
+          "id": "call_580940",
+          "name": "list_table_ids",
+          "response": {
+            "status": "SUCCESS",
+            "tables": [
+              "accounts",
+              "advisor_locations",
+              "complaints",
+              "customers",
+              "transactions"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "turn": 1,
+      "t_ms": 24988,
+      "author": "bq_agent",
+      "invocation_id": "e-d670a950-cb7a-4c19-a07d-366b81bcd5f4",
+      "parts": [
+        {
+          "type": "function_call",
+          "id": "call_400087",
+          "name": "get_table_info",
+          "args": {
+            "table_id": "transactions"
+          }
+        }
+      ]
+    },
+    {
+      "turn": 1,
+      "t_ms": 24988,
+      "author": "bq_agent",
+      "invocation_id": "e-d670a950-cb7a-4c19-a07d-366b81bcd5f4",
+      "parts": [
+        {
+          "type": "function_response",
+          "id": "call_400087",
+          "name": "get_table_info",
+          "response": {
+            "status": "SUCCESS",
+            "table": "transactions",
+            "columns": [
+              {
+                "name": "transaction_id",
+                "type": "TEXT"
+              },
+              {
+                "name": "account_id",
+                "type": "TEXT"
+              },
+              {
+                "name": "transaction_date",
+                "type": "TEXT"
+              },
+              {
+                "name": "merchant",
+                "type": "TEXT"
+              },
+              {
+                "name": "category",
+                "type": "TEXT"
+              },
+              {
+                "name": "amount",
+                "type": "REAL"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "turn": 1,
+      "t_ms": 25807,
+      "author": "bq_agent",
+      "invocation_id": "e-d670a950-cb7a-4c19-a07d-366b81bcd5f4",
+      "parts": [
+        {
+          "type": "function_call",
+          "id": "call_566099",
+          "name": "get_table_info",
+          "args": {
+            "table_id": "accounts"
+          }
+        }
+      ]
+    },
+    {
+      "turn": 1,
+      "t_ms": 25807,
+      "author": "bq_agent",
+      "invocation_id": "e-d670a950-cb7a-4c19-a07d-366b81bcd5f4",
+      "parts": [
+        {
+          "type": "function_response",
+          "id": "call_566099",
+          "name": "get_table_info",
+          "response": {
+            "status": "SUCCESS",
+            "table": "accounts",
+            "columns": [
+              {
+                "name": "account_id",
+                "type": "TEXT"
+              },
+              {
+                "name": "customer_id",
+                "type": "TEXT"
+              },
+              {
+                "name": "account_type",
+                "type": "TEXT"
+              },
+              {
+                "name": "balance",
+                "type": "REAL"
+              },
+              {
+                "name": "currency",
+                "type": "TEXT"
+              },
+              {
+                "name": "opened_date",
+                "type": "TEXT"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "turn": 1,
+      "t_ms": 26520,
+      "author": "bq_agent",
+      "invocation_id": "e-d670a950-cb7a-4c19-a07d-366b81bcd5f4",
+      "parts": [
+        {
+          "type": "function_call",
+          "id": "call_400813",
+          "name": "execute_sql",
+          "args": {
+            "query": "SELECT t.* \nFROM transactions t \nJOIN accounts a ON t.account_id = a.account_id \nWHERE a.customer_id = 'CUST-1001' \nAND t.merchant = 'Gadget Barn' \nAND t.transaction_date = '2023-10-03' \nAND t.amount = 89.99"
+          }
+        }
+      ]
+    },
+    {
+      "turn": 1,
+      "t_ms": 26521,
+      "author": "bq_agent",
+      "invocation_id": "e-d670a950-cb7a-4c19-a07d-366b81bcd5f4",
+      "parts": [
+        {
+          "type": "function_response",
+          "id": "call_400813",
+          "name": "execute_sql",
+          "response": {
+            "status": "SUCCESS",
+            "rows": []
+          }
+        }
+      ]
+    },
+    {
+      "turn": 1,
+      "t_ms": 27394,
+      "author": "bq_agent",
+      "invocation_id": "e-d670a950-cb7a-4c19-a07d-366b81bcd5f4",
+      "parts": [
+        {
+          "type": "function_call",
+          "id": "call_414112",
+          "name": "execute_sql",
+          "args": {
+            "query": "SELECT * FROM transactions WHERE merchant = 'Gadget Barn' AND transaction_date = '2023-10-03'"
+          }
+        }
+      ]
+    },
+    {
+      "turn": 1,
+      "t_ms": 27395,
+      "author": "bq_agent",
+      "invocation_id": "e-d670a950-cb7a-4c19-a07d-366b81bcd5f4",
+      "parts": [
+        {
+          "type": "function_response",
+          "id": "call_414112",
+          "name": "execute_sql",
+          "response": {
+            "status": "SUCCESS",
+            "rows": []
+          }
+        }
+      ]
+    },
+    {
+      "turn": 1,
+      "t_ms": 28934,
+      "author": "bq_agent",
+      "invocation_id": "e-d670a950-cb7a-4c19-a07d-366b81bcd5f4",
+      "parts": [
+        {
+          "type": "function_call",
+          "id": "call_292395",
+          "name": "execute_sql",
+          "args": {
+            "query": "SELECT DISTINCT merchant FROM transactions LIMIT 20"
+          }
+        }
+      ]
+    },
+    {
+      "turn": 1,
+      "t_ms": 28935,
+      "author": "bq_agent",
+      "invocation_id": "e-d670a950-cb7a-4c19-a07d-366b81bcd5f4",
+      "parts": [
+        {
+          "type": "function_response",
+          "id": "call_292395",
+          "name": "execute_sql",
+          "response": {
+            "status": "SUCCESS",
+            "rows": [
+              {
+                "merchant": "Bean There Coffee"
+              },
+              {
+                "merchant": "Northwind Grocers"
+              },
+              {
+                "merchant": "Exampleton Rail"
+              },
+              {
+                "merchant": "Gadget Barn"
+              },
+              {
+                "merchant": "StreamBox"
+              },
+              {
+                "merchant": "Acme Payroll"
+              },
+              {
+                "merchant": "Testbury Gym"
+              },
+              {
+                "merchant": "Testbury Books"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "turn": 1,
+      "t_ms": 29760,
+      "author": "bq_agent",
+      "invocation_id": "e-d670a950-cb7a-4c19-a07d-366b81bcd5f4",
+      "parts": [
+        {
+          "type": "function_call",
+          "id": "call_283215",
+          "name": "execute_sql",
+          "args": {
+            "query": "SELECT * FROM transactions WHERE merchant = 'Gadget Barn' LIMIT 10"
+          }
+        }
+      ]
+    },
+    {
+      "turn": 1,
+      "t_ms": 29761,
+      "author": "bq_agent",
+      "invocation_id": "e-d670a950-cb7a-4c19-a07d-366b81bcd5f4",
+      "parts": [
+        {
+          "type": "function_response",
+          "id": "call_283215",
+          "name": "execute_sql",
+          "response": {
+            "status": "SUCCESS",
+            "rows": [
+              {
+                "transaction_id": "TXN-3004",
+                "account_id": "ACC-2001",
+                "transaction_date": "2026-10-03",
+                "merchant": "Gadget Barn",
+                "category": "Shopping",
+                "amount": -89.99
+              },
+              {
+                "transaction_id": "TXN-3005",
+                "account_id": "ACC-2001",
+                "transaction_date": "2026-10-03",
+                "merchant": "Gadget Barn",
+                "category": "Shopping",
+                "amount": -89.99
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "turn": 1,
+      "t_ms": 30302,
+      "author": "bq_agent",
+      "invocation_id": "e-d670a950-cb7a-4c19-a07d-366b81bcd5f4",
+      "parts": [
+        {
+          "type": "function_call",
+          "id": "call_324177",
+          "name": "execute_sql",
+          "args": {
+            "query": "SELECT * FROM accounts WHERE account_id = 'ACC-2001'"
+          }
+        }
+      ]
+    },
+    {
+      "turn": 1,
+      "t_ms": 30303,
+      "author": "bq_agent",
+      "invocation_id": "e-d670a950-cb7a-4c19-a07d-366b81bcd5f4",
+      "parts": [
+        {
+          "type": "function_response",
+          "id": "call_324177",
+          "name": "execute_sql",
+          "response": {
+            "status": "SUCCESS",
+            "rows": [
+              {
+                "account_id": "ACC-2001",
+                "customer_id": "CUST-1001",
+                "account_type": "Current",
+                "balance": 1342.18,
+                "currency": "GBP",
+                "opened_date": "2021-03-14"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "turn": 1,
+      "t_ms": 30927,
+      "author": "bq_agent",
+      "invocation_id": "e-d670a950-cb7a-4c19-a07d-366b81bcd5f4",
+      "parts": [
+        {
+          "type": "function_call",
+          "id": "call_559041",
+          "name": "execute_sql",
+          "args": {
+            "query": "SELECT * FROM transactions WHERE account_id = 'ACC-2001' AND merchant = 'Gadget Barn'"
+          }
+        }
+      ]
+    },
+    {
+      "turn": 1,
+      "t_ms": 30928,
+      "author": "bq_agent",
+      "invocation_id": "e-d670a950-cb7a-4c19-a07d-366b81bcd5f4",
+      "parts": [
+        {
+          "type": "function_response",
+          "id": "call_559041",
+          "name": "execute_sql",
+          "response": {
+            "status": "SUCCESS",
+            "rows": [
+              {
+                "transaction_id": "TXN-3004",
+                "account_id": "ACC-2001",
+                "transaction_date": "2026-10-03",
+                "merchant": "Gadget Barn",
+                "category": "Shopping",
+                "amount": -89.99
+              },
+              {
+                "transaction_id": "TXN-3005",
+                "account_id": "ACC-2001",
+                "transaction_date": "2026-10-03",
+                "merchant": "Gadget Barn",
+                "category": "Shopping",
+                "amount": -89.99
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "turn": 1,
+      "t_ms": 32173,
+      "author": "bq_agent",
+      "invocation_id": "e-d670a950-cb7a-4c19-a07d-366b81bcd5f4",
+      "parts": [
+        {
+          "type": "text",
+          "text": "No transactions were found for customer **CUST-1001** at **Gadget Barn** on **2023-10-03** for the amount of **89.99**.\n\nHowever, I found two transactions for this customer (via account **ACC-2001**) at **Gadget Barn** for the amount of **-89.99** on **2026-10-03** (Transaction IDs: `TXN-3004` and `TXN-3005`). Please verify the date."
+        }
+      ]
+    },
+    {
+      "turn": 1,
+      "t_ms": 32174,
+      "author": "complaints_handler",
+      "invocation_id": "e-99a95f94-96be-4ab4-9dc3-f16dda4f5051",
+      "parts": [
+        {
+          "type": "function_response",
+          "id": "call_484508",
+          "name": "bq_agent",
+          "response": {
+            "result": "No transactions were found for customer **CUST-1001** at **Gadget Barn** on **2023-10-03** for the amount of **89.99**.\n\nHowever, I found two transactions for this customer (via account **ACC-2001**) at **Gadget Barn** for the amount of **-89.99** on **2026-10-03** (Transaction IDs: `TXN-3004` and `TXN-3005`). Please verify the date."
+          }
+        }
+      ]
+    },
+    {
+      "turn": 1,
+      "t_ms": 33440,
+      "author": "complaints_handler",
+      "invocation_id": "e-99a95f94-96be-4ab4-9dc3-f16dda4f5051",
+      "parts": [
+        {
+          "type": "text",
+          "text": "I understand this is frustrating, and I am here to help document this for you.\n\nI searched for your complaint history and found no open complaints. Regarding the double charge at Gadget Barn, I was unable to find transactions matching your date of October 3, 2023. However, I did locate two transactions for 89.99 each at Gadget Barn on October 3, 2026, with the following Transaction IDs: `TXN-3004` and `TXN-3005`.\n\nCould you please confirm if these are the transactions you are referring to? If so, would you like me to proceed with filing a 'Dispute' complaint for these transactions?"
+        }
+      ]
+    },
+    {
+      "turn": 2,
+      "t_ms": 33440,
+      "author": "user",
+      "parts": [
+        {
+          "type": "text",
+          "text": "Yes, that's correct. Please create the complaint."
+        }
+      ]
+    },
+    {
+      "turn": 2,
+      "t_ms": 34226,
+      "author": "complaints_handler",
+      "invocation_id": "e-ff75cb26-998d-4a67-b127-090bc6879960",
+      "parts": [
+        {
+          "type": "function_call",
+          "id": "call_550596",
+          "name": "initiate_complaint_by_name",
+          "args": {
+            "category": "Dispute",
+            "customer_name": "Alex Example",
+            "transaction_id": "TXN-3004, TXN-3005",
+            "description": "Double charge of 89.99 at Gadget Barn on 2026-10-03 (Transaction IDs: TXN-3004 and TXN-3005)."
+          }
+        }
+      ]
+    },
+    {
+      "turn": 2,
+      "t_ms": 34228,
+      "author": "complaints_handler",
+      "invocation_id": "e-ff75cb26-998d-4a67-b127-090bc6879960",
+      "parts": [
+        {
+          "type": "function_response",
+          "id": "call_550596",
+          "name": "initiate_complaint_by_name",
+          "response": {
+            "result": "Success: Complaint created with ID: e6d50bc9-28d6-4053-8622-91648cb501d3"
+          }
+        }
+      ]
+    },
+    {
+      "turn": 2,
+      "t_ms": 35489,
+      "author": "complaints_handler",
+      "invocation_id": "e-ff75cb26-998d-4a67-b127-090bc6879960",
+      "parts": [
+        {
+          "type": "text",
+          "text": "I have successfully filed your complaint regarding the double charge at Gadget Barn.\n\n**Complaint ID:** e6d50bc9-28d6-4053-8622-91648cb501d3\n**Status:** Initiated\n\nThe team will review this, and you will be notified of any updates. Is there anything else I can assist you with today?"
+        }
+      ]
+    }
+  ],
+  "database_after": [
+    {
+      "label": "Alex Example's complaints after the run",
+      "sql": "SELECT complaint_id, transaction_id, category, status, description FROM complaints WHERE customer_id = 'CUST-1001'",
+      "rows": [
+        {
+          "complaint_id": "e6d50bc9-28d6-4053-8622-91648cb501d3",
+          "transaction_id": "TXN-3004, TXN-3005",
+          "category": "Dispute",
+          "status": "Open",
+          "description": "Double charge of 89.99 at Gadget Barn on 2026-10-03 (Transaction IDs: TXN-3004 and TXN-3005)."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,432 @@
+{
+  "id": "customer-lookup",
+  "title": "Customer lookup",
+  "summary": "A free-form question about one customer's spending, answered through bq_agent.",
+  "model": "gemini-3.8-flash",
+  "backend": "sqlite (fictional demo data)",
+  "recorded_at": "2026-10-15T06:43:35+00:00",
+  "events": [
+    {
+      "turn": 1,
+      "t_ms": 8,
+      "author": "user",
+      "parts": [
+        {
+          "type": "text",
+          "text": "Show me Alex Example's transactions from October 2026."
+        }
+      ]
+    },
+    {
+      "turn": 1,
+      "t_ms": 171184,
+      "author": "root_agent",
+      "invocation_id": "e-6f7abff2-729d-4d99-8038-28f66836662f",
+      "parts": [
+        {
+          "type": "function_call",
+          "id": "call_103359",
+          "name": "bq_agent",
+          "args": {
+            "request": "Show me Alex Example's transactions from October 2026"
+          }
+        }
+      ]
+    },
+    {
+      "turn": 1,
+      "t_ms": 196430,
+      "author": "bq_agent",
+      "invocation_id": "e-0647eed8-76a2-4de0-957c-b837252060fe",
+      "parts": [
+        {
+          "type": "function_call",
+          "id": "call_205125",
+          "name": "get_table_info",
+          "args": {
+            "table_id": "customers"
+          }
+        },
+        {
+          "type": "function_call",
+          "id": "call_205126",
+          "name": "get_table_info",
+          "args": {
+            "table_id": "accounts"
+          }
+        },
+        {
+          "type": "function_call",
+          "id": "call_205127",
+          "name": "get_table_info",
+          "args": {
+            "table_id": "transactions"
+          }
+        }
+      ]
+    },
+    {
+      "turn": 1,
+      "t_ms": 196432,
+      "author": "bq_agent",
+      "invocation_id": "e-0647eed8-76a2-4de0-957c-b837252060fe",
+      "parts": [
+        {
+          "type": "function_response",
+          "id": "call_205125",
+          "name": "get_table_info",
+          "response": {
+            "status": "SUCCESS",
+            "table": "customers",
+            "columns": [
+              {
+                "name": "customer_id",
+                "type": "TEXT"
+              },
+              {
+                "name": "name",
+                "type": "TEXT"
+              },
+              {
+                "name": "email",
+                "type": "TEXT"
+              },
+              {
+                "name": "phone",
+                "type": "TEXT"
+              },
+              {
+                "name": "address",
+                "type": "TEXT"
+              },
+              {
+                "name": "date_joined",
+                "type": "TEXT"
+              }
+            ]
+          }
+        },
+        {
+          "type": "function_response",
+          "id": "call_205126",
+          "name": "get_table_info",
+          "response": {
+            "status": "SUCCESS",
+            "table": "accounts",
+            "columns": [
+              {
+                "name": "account_id",
+                "type": "TEXT"
+              },
+              {
+                "name": "customer_id",
+                "type": "TEXT"
+              },
+              {
+                "name": "account_type",
+                "type": "TEXT"
+              },
+              {
+                "name": "balance",
+                "type": "REAL"
+              },
+              {
+                "name": "currency",
+                "type": "TEXT"
+              },
+              {
+                "name": "opened_date",
+                "type": "TEXT"
+              }
+            ]
+          }
+        },
+        {
+          "type": "function_response",
+          "id": "call_205127",
+          "name": "get_table_info",
+          "response": {
+            "status": "SUCCESS",
+            "table": "transactions",
+            "columns": [
+              {
+                "name": "transaction_id",
+                "type": "TEXT"
+              },
+              {
+                "name": "account_id",
+                "type": "TEXT"
+              },
+              {
+                "name": "transaction_date",
+                "type": "TEXT"
+              },
+              {
+                "name": "merchant",
+                "type": "TEXT"
+              },
+              {
+                "name": "category",
+                "type": "TEXT"
+              },
+              {
+                "name": "amount",
+                "type": "REAL"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "turn": 1,
+      "t_ms": 270100,
+      "author": "bq_agent",
+      "invocation_id": "e-0647eed8-76a2-4de0-957c-b837252060fe",
+      "parts": [
+        {
+          "type": "function_call",
+          "id": "call_195162",
+          "name": "execute_sql",
+          "args": {
+            "query": "SELECT c.customer_id, c.name, a.account_id, a.account_type, t.transaction_id, t.transaction_date, t.merchant, t.category, t.amount\nFROM customers c\nJOIN accounts a ON c.customer_id = a.customer_id\nJOIN transactions t ON a.account_id = t.account_id\nWHERE c.name LIKE '%Alex Example%' AND t.transaction_date LIKE '2026-10%'\nORDER BY t.transaction_date;"
+          }
+        }
+      ]
+    },
+    {
+      "turn": 1,
+      "t_ms": 270101,
+      "author": "bq_agent",
+      "invocation_id": "e-0647eed8-76a2-4de0-957c-b837252060fe",
+      "parts": [
+        {
+          "type": "function_response",
+          "id": "call_195162",
+          "name": "execute_sql",
+          "response": {
+            "status": "SUCCESS",
+            "rows": [
+              {
+                "customer_id": "CUST-1001",
+                "name": "Alex Example",
+                "account_id": "ACC-2001",
+                "account_type": "Current",
+                "transaction_id": "TXN-3003",
+                "transaction_date": "2026-10-01",
+                "merchant": "Exampleton Rail",
+                "category": "Transport",
+                "amount": -12.8
+              },
+              {
+                "customer_id": "CUST-1001",
+                "name": "Alex Example",
+                "account_id": "ACC-2001",
+                "account_type": "Current",
+                "transaction_id": "TXN-3004",
+                "transaction_date": "2026-10-03",
+                "merchant": "Gadget Barn",
+                "category": "Shopping",
+                "amount": -89.99
+              },
+              {
+                "customer_id": "CUST-1001",
+                "name": "Alex Example",
+                "account_id": "ACC-2001",
+                "account_type": "Current",
+                "transaction_id": "TXN-3005",
+                "transaction_date": "2026-10-03",
+                "merchant": "Gadget Barn",
+                "category": "Shopping",
+                "amount": -89.99
+              },
+              {
+                "customer_id": "CUST-1001",
+                "name": "Alex Example",
+                "account_id": "ACC-2001",
+                "account_type": "Current",
+                "transaction_id": "TXN-3006",
+                "transaction_date": "2026-10-05",
+                "merchant": "StreamBox",
+                "category": "Subscriptions",
+                "amount": -9.99
+              },
+              {
+                "customer_id": "CUST-1001",
+                "name": "Alex Example",
+                "account_id": "ACC-2001",
+                "account_type": "Current",
+                "transaction_id": "TXN-3007",
+                "transaction_date": "2026-10-06",
+                "merchant": "Acme Payroll",
+                "category": "Income",
+                "amount": 2150.0
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "turn": 1,
+      "t_ms": 292792,
+      "author": "bq_agent",
+      "invocation_id": "e-0647eed8-76a2-4de0-957c-b837252060fe",
+      "parts": [
+        {
+          "type": "function_call",
+          "id": "call_105059",
+          "name": "execute_sql",
+          "args": {
+            "query": "SELECT * FROM accounts WHERE customer_id = 'CUST-1001';"
+          }
+        }
+      ]
+    },
+    {
+      "turn": 1,
+      "t_ms": 292792,
+      "author": "bq_agent",
+      "invocation_id": "e-0647eed8-76a2-4de0-957c-b837252060fe",
+      "parts": [
+        {
+          "type": "function_response",
+          "id": "call_105059",
+          "name": "execute_sql",
+          "response": {
+            "status": "SUCCESS",
+            "rows": [
+              {
+                "account_id": "ACC-2001",
+                "customer_id": "CUST-1001",
+                "account_type": "Current",
+                "balance": 1342.18,
+                "currency": "GBP",
+                "opened_date": "2021-03-14"
+              },
+              {
+                "account_id": "ACC-2002",
+                "customer_id": "CUST-1001",
+                "account_type": "Savings",
+                "balance": 5200.0,
+                "currency": "GBP",
+                "opened_date": "2022-01-05"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "turn": 1,
+      "t_ms": 294254,
+      "author": "bq_agent",
+      "invocation_id": "e-0647eed8-76a2-4de0-957c-b837252060fe",
+      "parts": [
+        {
+          "type": "function_call",
+          "id": "call_174534",
+          "name": "execute_sql",
+          "args": {
+            "query": "SELECT * FROM transactions WHERE account_id = 'ACC-2002' AND transaction_date LIKE '2026-10%';"
+          }
+        }
+      ]
+    },
+    {
+      "turn": 1,
+      "t_ms": 294254,
+      "author": "bq_agent",
+      "invocation_id": "e-0647eed8-76a2-4de0-957c-b837252060fe",
+      "parts": [
+        {
+          "type": "function_response",
+          "id": "call_174534",
+          "name": "execute_sql",
+          "response": {
+            "status": "SUCCESS",
+            "rows": []
+          }
+        }
+      ]
+    },
+    {
+      "turn": 1,
+      "t_ms": 298396,
+      "author": "bq_agent",
+      "invocation_id": "e-0647eed8-76a2-4de0-957c-b837252060fe",
+      "parts": [
+        {
+          "type": "text",
+          "text": "Here are the transactions for **Alex Example** (Customer ID: `CUST-1001`, Account: `ACC-2001` - Current Account) for **October 2026**:\n\n| Transaction ID | Date | Merchant | Category | Amount |\n| :--- | :--- | :--- | :--- | :--- |\n| **TXN-3003** | 2026-10-01 | Exampleton Rail | Transport | -£12.80 |\n| **TXN-3004** | 2026-10-03 | Gadget Barn | Shopping | -£89.99 |\n| **TXN-3005** | 2026-10-03 | Gadget Barn | Shopping | -£89.99 |\n| **TXN-3006** | 2026-10-05 | StreamBox | Subscriptions | -£9.99 |\n| **TXN-3007** | 2026-10-06 | Acme Payroll | Income | +£2,150.00 |\n\n*(Note: There were no transactions recorded for Alex Example's Savings account `ACC-2002` during October 2026.)*"
+        }
+      ]
+    },
+    {
+      "turn": 1,
+      "t_ms": 298397,
+      "author": "root_agent",
+      "invocation_id": "e-6f7abff2-729d-4d99-8038-28f66836662f",
+      "parts": [
+        {
+          "type": "function_response",
+          "id": "call_103359",
+          "name": "bq_agent",
+          "response": {
+            "result": "Here are the transactions for **Alex Example** (Customer ID: `CUST-1001`, Account: `ACC-2001` - Current Account) for **October 2026**:\n\n| Transaction ID | Date | Merchant | Category | Amount |\n| :--- | :--- | :--- | :--- | :--- |\n| **TXN-3003** | 2026-10-01 | Exampleton Rail | Transport | -£12.80 |\n| **TXN-3004** | 2026-10-03 | Gadget Barn | Shopping | -£89.99 |\n| **TXN-3005** | 2026-10-03 | Gadget Barn | Shopping | -£89.99 |\n| **TXN-3006** | 2026-10-05 | StreamBox | Subscriptions | -£9.99 |\n| **TXN-3007** | 2026-10-06 | Acme Payroll | Income | +£2,150.00 |\n\n*(Note: There were no transactions recorded for Alex Example's Savings account `ACC-2002` during October 2026.)*"
+          }
+        }
+      ]
+    },
+    {
+      "turn": 1,
+      "t_ms": 316445,
+      "author": "root_agent",
+      "invocation_id": "e-6f7abff2-729d-4d99-8038-28f66836662f",
+      "parts": [
+        {
+          "type": "text",
+          "text": "Here are the transactions for **Alex Example** (Account: `ACC-2001`) from October 2026:\n\n| Transaction ID | Date | Merchant | Category | Amount |\n| :--- | :--- | :--- | :--- | :--- |\n| TXN-3003 | 2026-10-01 | **Exampleton Rail** | *Transport* | -£12.80 |\n| TXN-3004 | 2026-10-03 | **Gadget Barn** | *Shopping* | -£89.99 |\n| TXN-3005 | 2026-10-03 | **Gadget Barn** | *Shopping* | -£89.99 |\n| TXN-3006 | 2026-10-05 | **StreamBox** | *Subscriptions* | -£9.99 |\n| TXN-3007 | 2026-10-06 | **Acme Payroll** | *Income* | +£2,150.00 |\n\n*(Note: There were no transactions recorded for the Savings account `ACC-2002` during this period.)*\n\n---\n\n### Concierge Insight:\nI noticed two identical charges of **£89.99** at **Gadget Barn** on October 3, 2026 (`TXN-3004` and `TXN-3005`). If this was an unintended duplicate charge, please let me know and I would be glad to assist you in raising an inquiry or dispute."
+        }
+      ]
+    }
+  ],
+  "database_after": [
+    {
+      "label": "Alex Example's October transactions in the database",
+      "sql": "SELECT t.transaction_id, t.transaction_date, t.merchant, t.amount FROM transactions t JOIN accounts a USING (account_id) JOIN customers c USING (customer_id) WHERE c.name = 'Alex Example' AND t.transaction_date >= '2026-10-01' ORDER BY t.transaction_date",
+      "rows": [
+        {
+          "transaction_id": "TXN-3003",
+          "transaction_date": "2026-10-01",
+          "merchant": "Exampleton Rail",
+          "amount": -12.8
+        },
+        {
+          "transaction_id": "TXN-3004",
+          "transaction_date": "2026-10-03",
+          "merchant": "Gadget Barn",
+          "amount": -89.99
+        },
+        {
+          "transaction_id": "TXN-3005",
+          "transaction_date": "2026-10-03",
+          "merchant": "Gadget Barn",
+          "amount": -89.99
+        },
+        {
+          "transaction_id": "TXN-3006",
+          "transaction_date": "2026-10-05",
+          "merchant": "StreamBox",
+          "amount": -9.99
+        },
+        {
+          "transaction_id": "TXN-3007",
+          "transaction_date": "2026-10-06",
+          "merchant": "Acme Payroll",
+          "amount": 2150.0
+        }
+      ]
+    }
+  ]
+}

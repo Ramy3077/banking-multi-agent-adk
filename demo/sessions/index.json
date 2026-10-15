@@ -1,0 +1,50 @@
+[
+  {
+    "id": "customer-lookup",
+    "title": "Customer lookup",
+    "summary": "A free-form question about one customer's spending, answered through bq_agent.",
+    "recorded_at": "2026-10-15T06:43:35+00:00",
+    "model": "gemini-3.8-flash",
+    "file": "sessions/customer-lookup.json"
+  },
+  {
+    "id": "update-phone",
+    "title": "Update a phone number",
+    "summary": "A write through the root agent's update_customer_phone_by_name tool.",
+    "recorded_at": "2026-10-15T06:49:42+00:00",
+    "model": "gemini-3.8-flash",
+    "file": "sessions/update-phone.json"
+  },
+  {
+    "id": "ambiguous-name",
+    "title": "Two customers, one name",
+    "summary": "The phone update refuses to guess when a name matches two customers.",
+    "recorded_at": "2026-10-15T06:55:04+00:00",
+    "model": "gemini-3-flash-preview",
+    "file": "sessions/ambiguous-name.json"
+  },
+  {
+    "id": "raise-complaint",
+    "title": "Raise a complaint",
+    "summary": "Handoff to complaints_handler, which checks for open complaints, finds the transaction and asks before writing.",
+    "recorded_at": "2026-10-15T11:15:35+00:00",
+    "model": "gemini-3.1-flash-lite",
+    "file": "sessions/raise-complaint.json"
+  },
+  {
+    "id": "nearest-advisor",
+    "title": "Find the nearest advisor",
+    "summary": "Handoff to navigator_agent, which looks up the customer's address and searches for nearby Pop-Up Advisors.",
+    "recorded_at": "2026-10-15T11:06:32+00:00",
+    "model": "gemini-3-flash-preview",
+    "file": "sessions/nearest-advisor.json"
+  },
+  {
+    "id": "out-of-scope",
+    "title": "Out-of-scope request",
+    "summary": "Investment advice and an off-topic request, which the root prompt says to decline.",
+    "recorded_at": "2026-10-15T06:58:24+00:00",
+    "model": "gemini-3.7-flash",
+    "file": "sessions/out-of-scope.json"
+  }
+]

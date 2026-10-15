@@ -1,0 +1,231 @@
+{
+  "id": "ambiguous-name",
+  "title": "Two customers, one name",
+  "summary": "The phone update refuses to guess when a name matches two customers.",
+  "model": "gemini-3-flash-preview",
+  "backend": "sqlite (fictional demo data)",
+  "recorded_at": "2026-10-15T06:55:04+00:00",
+  "events": [
+    {
+      "turn": 1,
+      "t_ms": 0,
+      "author": "user",
+      "parts": [
+        {
+          "type": "text",
+          "text": "Change Chris Duplicate's phone number to 01632 960 555."
+        }
+      ]
+    },
+    {
+      "turn": 1,
+      "t_ms": 1766,
+      "author": "root_agent",
+      "invocation_id": "e-e5799f48-2385-4e16-945c-eea1891a29aa",
+      "parts": [
+        {
+          "type": "function_call",
+          "id": "call_142542",
+          "name": "update_customer_phone_by_name",
+          "args": {
+            "new_phone_number": "01632 960 555",
+            "customer_name": "Chris Duplicate"
+          }
+        }
+      ]
+    },
+    {
+      "turn": 1,
+      "t_ms": 1766,
+      "author": "root_agent",
+      "invocation_id": "e-e5799f48-2385-4e16-945c-eea1891a29aa",
+      "parts": [
+        {
+          "type": "function_response",
+          "id": "call_142542",
+          "name": "update_customer_phone_by_name",
+          "response": {
+            "result": "Error: Multiple customers found with the name 'Chris Duplicate'. Please provide a unique customer ID."
+          }
+        }
+      ]
+    },
+    {
+      "turn": 1,
+      "t_ms": 4022,
+      "author": "root_agent",
+      "invocation_id": "e-e5799f48-2385-4e16-945c-eea1891a29aa",
+      "parts": [
+        {
+          "type": "function_call",
+          "id": "call_80341",
+          "name": "bq_agent",
+          "args": {
+            "request": "Find all customers named \"Chris Duplicate\" and show their ID, name, and address."
+          }
+        }
+      ]
+    },
+    {
+      "turn": 1,
+      "t_ms": 5603,
+      "author": "bq_agent",
+      "invocation_id": "e-b31dfac4-1a58-46ec-a549-c71bc5d1ec11",
+      "parts": [
+        {
+          "type": "function_call",
+          "id": "call_161994",
+          "name": "get_table_info",
+          "args": {
+            "table_id": "customers"
+          }
+        }
+      ]
+    },
+    {
+      "turn": 1,
+      "t_ms": 5604,
+      "author": "bq_agent",
+      "invocation_id": "e-b31dfac4-1a58-46ec-a549-c71bc5d1ec11",
+      "parts": [
+        {
+          "type": "function_response",
+          "id": "call_161994",
+          "name": "get_table_info",
+          "response": {
+            "status": "SUCCESS",
+            "table": "customers",
+            "columns": [
+              {
+                "name": "customer_id",
+                "type": "TEXT"
+              },
+              {
+                "name": "name",
+                "type": "TEXT"
+              },
+              {
+                "name": "email",
+                "type": "TEXT"
+              },
+              {
+                "name": "phone",
+                "type": "TEXT"
+              },
+              {
+                "name": "address",
+                "type": "TEXT"
+              },
+              {
+                "name": "date_joined",
+                "type": "TEXT"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "turn": 1,
+      "t_ms": 6906,
+      "author": "bq_agent",
+      "invocation_id": "e-b31dfac4-1a58-46ec-a549-c71bc5d1ec11",
+      "parts": [
+        {
+          "type": "function_call",
+          "id": "call_188693",
+          "name": "execute_sql",
+          "args": {
+            "query": "SELECT customer_id, name, address FROM customers WHERE name = 'Chris Duplicate'"
+          }
+        }
+      ]
+    },
+    {
+      "turn": 1,
+      "t_ms": 6907,
+      "author": "bq_agent",
+      "invocation_id": "e-b31dfac4-1a58-46ec-a549-c71bc5d1ec11",
+      "parts": [
+        {
+          "type": "function_response",
+          "id": "call_188693",
+          "name": "execute_sql",
+          "response": {
+            "status": "SUCCESS",
+            "rows": [
+              {
+                "customer_id": "CUST-1006",
+                "name": "Chris Duplicate",
+                "address": "21 Copy Lane, Exampleton, EX4 2FF"
+              },
+              {
+                "customer_id": "CUST-1007",
+                "name": "Chris Duplicate",
+                "address": "9 Twin Row, Testbury, TB2 9GG"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "turn": 1,
+      "t_ms": 8285,
+      "author": "bq_agent",
+      "invocation_id": "e-b31dfac4-1a58-46ec-a549-c71bc5d1ec11",
+      "parts": [
+        {
+          "type": "text",
+          "text": "The customers named \"Chris Duplicate\" are:\n\n- **ID:** CUST-1006\n  - **Name:** Chris Duplicate\n  - **Address:** 21 Copy Lane, Exampleton, EX4 2FF\n\n- **ID:** CUST-1007\n  - **Name:** Chris Duplicate\n  - **Address:** 9 Twin Row, Testbury, TB2 9GG"
+        }
+      ]
+    },
+    {
+      "turn": 1,
+      "t_ms": 8285,
+      "author": "root_agent",
+      "invocation_id": "e-e5799f48-2385-4e16-945c-eea1891a29aa",
+      "parts": [
+        {
+          "type": "function_response",
+          "id": "call_80341",
+          "name": "bq_agent",
+          "response": {
+            "result": "The customers named \"Chris Duplicate\" are:\n\n- **ID:** CUST-1006\n  - **Name:** Chris Duplicate\n  - **Address:** 21 Copy Lane, Exampleton, EX4 2FF\n\n- **ID:** CUST-1007\n  - **Name:** Chris Duplicate\n  - **Address:** 9 Twin Row, Testbury, TB2 9GG"
+          }
+        }
+      ]
+    },
+    {
+      "turn": 1,
+      "t_ms": 12993,
+      "author": "root_agent",
+      "invocation_id": "e-e5799f48-2385-4e16-945c-eea1891a29aa",
+      "parts": [
+        {
+          "type": "text",
+          "text": "It appears we have two customers named **Chris Duplicate** in our system. To ensure I update the correct record, could you please tell me which one you are referring to?\n\n| Customer ID | Address |\n| :--- | :--- |\n| **CUST-1006** | 21 Copy Lane, Exampleton, EX4 2FF |\n| **CUST-1007** | 9 Twin Row, Testbury, TB2 9GG |\n\nOnce you confirm the correct individual, I will proceed with updating the phone number to **01632 960 555**."
+        }
+      ]
+    }
+  ],
+  "database_after": [
+    {
+      "label": "Both Chris Duplicate records after the run",
+      "sql": "SELECT customer_id, name, phone FROM customers WHERE name = 'Chris Duplicate'",
+      "rows": [
+        {
+          "customer_id": "CUST-1006",
+          "name": "Chris Duplicate",
+          "phone": "01632 960 106"
+        },
+        {
+          "customer_id": "CUST-1007",
+          "name": "Chris Duplicate",
+          "phone": "01632 960 107"
+        }
+      ]
+    }
+  ]
+}

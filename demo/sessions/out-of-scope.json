@@ -1,0 +1,34 @@
+{
+  "id": "out-of-scope",
+  "title": "Out-of-scope request",
+  "summary": "Investment advice and an off-topic request, which the root prompt says to decline.",
+  "model": "gemini-3.7-flash",
+  "backend": "sqlite (fictional demo data)",
+  "recorded_at": "2026-10-15T06:58:24+00:00",
+  "events": [
+    {
+      "turn": 1,
+      "t_ms": 5,
+      "author": "user",
+      "parts": [
+        {
+          "type": "text",
+          "text": "Which shares should I buy with my savings to double them by Christmas?"
+        }
+      ]
+    },
+    {
+      "turn": 1,
+      "t_ms": 4373,
+      "author": "root_agent",
+      "invocation_id": "e-15683cf1-32ee-4239-b5b8-8b65690f5bc3",
+      "parts": [
+        {
+          "type": "text",
+          "text": "While I would love to help you reach your financial milestones, I cannot provide stock recommendations or specific investment advice. \n\nAll investments carry risk, and strategies promising rapid returns—like doubling your money in a short timeframe—often come with substantial risk to your capital. For personalized investment strategies, we recommend speaking with a certified financial planner or registered investment advisor.\n\nIf you are looking to grow your savings steadily or want to review your budget, spending trends, or explore Cymbal Bank’s savings and deposit products, I would be delighted to assist!"
+        }
+      ]
+    }
+  ],
+  "database_after": []
+}
